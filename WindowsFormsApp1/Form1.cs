@@ -30,12 +30,16 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             con.Open();
-            SqlCommand cmd = new SqlCommand("exec KargoEkle @kargoadi,@kargotelno", con);
+            SqlCommand cmd = new SqlCommand("KargoEkle1", con);
+            cmd.CommandType = CommandType.StoredProcedure;
             cmd.Parameters.AddWithValue("@kargoadi", textBox1.Text);
             cmd.Parameters.AddWithValue("@kargotelno", textBox2.Text);
+            //SqlCommand cmd = new SqlCommand("exec KargoEkle1 @kargoadi,@kargotelno", con);
+            //cmd.Parameters.AddWithValue("@kargoadi", textBox1.Text);
+            //cmd.Parameters.AddWithValue("@kargotelno", textBox2.Text);
             int etk = cmd.ExecuteNonQuery();
             MessageBox.Show("Etkilenen satir = "+etk);
-
+            
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
