@@ -20,13 +20,6 @@ namespace WindowsFormsApp1
 
         SqlConnection con = new SqlConnection("Server= .;Database= Northwind; trusted_connection=true");
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            comboBox1.Items.Add("... ile başlayan ");
-            comboBox1.Items.Add("... ile biten ");
-            comboBox1.Items.Add("içinde ... geçen ");
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             con.Open();
@@ -40,6 +33,20 @@ namespace WindowsFormsApp1
             int etk = cmd.ExecuteNonQuery();
             MessageBox.Show("Etkilenen satir = "+etk);
             
+        }
+        private void button2_Click(object sender, EventArgs e)
+        {
+            SqlCommand cmd = new SqlCommand(@"create proc UrunAram (@deger nvarchar(40)) as select ProductName from Products where ProductName like @deger", con);
+            con.Open();
+            int etk = cmd.ExecuteNonQuery();
+            MessageBox.Show("Etkilenen satir = " + etk);
+            con.Close();
+        }
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            comboBox1.Items.Add("... ile başlayan ");
+            comboBox1.Items.Add("... ile biten ");
+            comboBox1.Items.Add("içinde ... geçen ");
         }
 
         private void textBox3_TextChanged(object sender, EventArgs e)
@@ -59,23 +66,15 @@ namespace WindowsFormsApp1
                     cmd.Parameters.AddWithValue("@deger", "%"+textBox3.Text+"%");
                     break;
             }
-            con.Open();
+            
             SqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 listBox1.Items.Add(reader.GetString(0));
             }
-            con.Close();
+            
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-            SqlCommand cmd = new SqlCommand(@"create proc UrunAram (@deger nvarchar(40)) as select ProductName from Products where ProductName like @deger", con);
-            con.Open();
-            int etki = cmd.ExecuteNonQuery();
-            MessageBox.Show("Etkilenen satir = " + etki);
-            con.Close();
-
-        }
+        
     }
 }
